@@ -1,0 +1,4 @@
+
+jars gotta be run with the following
+
+-Dbase.static_dirs=src/main/webapp/static/

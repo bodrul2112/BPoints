@@ -1,0 +1,62 @@
+
+
+.list_item {
+}
+
+.list_text {
+	font-style: italic;
+}
+
+.list_expand_point_wrapper {
+	
+	display: inline-block;
+}
+
+.input_wrapper {
+	
+	display: inline-block;
+}
+
+.expand_point {
+	
+	float: left;
+}
+
+.expand_point_name {
+	
+	font-weight: bold;
+}
+
+.expand_point_btn {
+	
+}
+
+.expand_input_box {
+	border: 0;
+	border-bottom: 1px solid black;
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.add_text {
+	
+	float: left;
+}
+
+.add_text_btn {
+	color: lightgray;
+}
+
+.add_text_input_box {
+	border: 0;
+	border-bottom: 1px solid lightgray;
+	font-style: italic;
+}
+
+input.add_text.add_text_input_box {}
+
+
+.hide_it {
+	display:none;
+}
