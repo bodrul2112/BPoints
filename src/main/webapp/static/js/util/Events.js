@@ -12,16 +12,18 @@ define([],
         {
         	if(!this.eventNameToCallback[eventName])
         	{
-        		this.eventNameToCallback[eventName] = {};
+        		this.eventNameToCallback[eventName] = [];
         	}
         	
         	var callbacks = this.eventNameToCallback[eventName];
         	
-        	if(!callbacks[callback])
+        	/*
+        	if(callbacks[callback] != callback)
         	{
         		callbacks[callback]=callback;
         	}
-
+        	*/
+        	callbacks.push(callback);
         }
         
         EventsInternal.prototype.publish = function( eventName, data ) 

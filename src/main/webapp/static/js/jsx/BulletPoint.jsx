@@ -5,6 +5,7 @@ define(['react'], function(React) {
       return {
     	  event_id: Events.getUID(),
     	  isListDisplayed:false,
+    	  isOpenedOnce:false,
     	  name: this.props.data.name,
     	  bulletTexts: [],
     	  subBulletPoints: []
@@ -18,7 +19,8 @@ define(['react'], function(React) {
     	Events.subscribe(this.state.event_id, this.onClick_get_text_callback.bind(this));
     	var data = {
     		id: this.state.event_id,
-    		path: this.props.data.path
+    		path: this.props.data.path,
+    		opened_state: this.state.isListDisplayed
     	}
     	Events.publish("load_text", data);
     },
@@ -48,7 +50,7 @@ define(['react'], function(React) {
     	{
     		// do nothing
     	}
-    	else
+    	else if(!this.state.isOpenedOnce)
     	{
     		// default is to render add the sub points
         	for(var key in data.folder_list)
@@ -56,11 +58,13 @@ define(['react'], function(React) {
         		var mData = data.folder_list[key];
         		this.state.subBulletPoints.push(<BulletPoint data={mData} />);
         	}
+        	
     	}
     	
     	this.setState({isListDisplayed: this.state.isListDisplayed,
 			   bulletTexts: data.text_list || [],
-			   subBulletPoints: this.state.subBulletPoints});
+			   subBulletPoints: this.state.subBulletPoints,
+			   isOpenedOnce: true});
     },
     
     onClick_addText: function()

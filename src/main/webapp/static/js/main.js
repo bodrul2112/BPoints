@@ -29,8 +29,8 @@
 
 // ^ loading the singletons Events/Loader/BPFactory
 require([ 'react', 'components/BulletPoint', 'components/BulletPoint',
-		'util/Events', 'util/Loader', 'util/Persist', 'util/BPFactory' ], function(React,
-		BulletPoint, E, L, P, B) {
+		'util/Events', 'util/Loader', 'util/Persist', 'util/BPFactory', 'util/OpenedState' ], function(React,
+		BulletPoint, E, L, P, B, O) {
 
 	var initial_load = function(eventName, mData) {
 		console.log(mData);
@@ -40,7 +40,8 @@ require([ 'react', 'components/BulletPoint', 'components/BulletPoint',
 		React.render(BulletPoint({
 			data : mData
 		}), document.getElementById('js-app-container'));
-
+		
+		OpenedState._startPiping();
 	}
 
 	Events.subscribe('initial_load', initial_load);

@@ -34,7 +34,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	
 	public FileCrawlerWeb()
 	{
-		rootFile = new File("").getAbsolutePath();
+		//rootFile = new File("").getAbsolutePath();
 	}
 	
 	//http://localhost:6677/bpoints/folder/?path=___the_top_folder_please_dont_use_this_id&id=my_id
@@ -74,6 +74,25 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	}
 	
 	//http://localhost:6677/bpoints/text_list/?path=___the_top_folder_please_dont_use_this_id
+	@GET
+	@Path("/load_opened")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object getOpenedList(@QueryParam("id") String id) 
+	{
+		File textFile = new File(rootFile +"/opened.json");
+		Map<Object, Object> result = new HashMap<>();
+		if(textFile.exists())
+		{
+			Map<Object, Object> contentsAsMap = Objects.firstNonNull(getMap(getContent(textFile.getAbsolutePath())), new HashMap<>());
+			if(!contentsAsMap.isEmpty())
+			{
+				result.put("opened", contentsAsMap);
+			}
+		}
+		result.put("id", id);
+		return Response.status(200).entity(result).build();
+	}
+
 	@GET
 	@Path("/text_list")
     @Produces(MediaType.APPLICATION_JSON)
@@ -145,6 +164,31 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		Map<Object, Object> actualResult = getTextohMessage((String)postData.get("path"), (String)postData.get("id"));
 		actualResult.put("new_texts",postData.get("new_texts"));
 		return Response.status(200).entity(gson.toJson(actualResult)).build();
+    }
+	
+	@POST
+	@Path("/save_opened")
+	@Consumes({"application/xml", "application/json"})
+	@Produces({"application/xml", "application/json"})
+	public Response saveOpened(Map<Object,Object> postData) 
+	{
+		File textFile = new File(rootFile +"/opened.json");
+		System.out.println("saving opened :: " + textFile.getAbsolutePath());
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(postData);
+		
+		BufferedWriter writer;
+		try{
+        writer = new BufferedWriter(new FileWriter(textFile));
+        writer.write(json);
+        writer.close();  
+		}
+		catch(Exception e){
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create opened json").build();
+		}
+		
+		return Response.status(200).build();
     }
 	
 //	public static List<Object> getList(Object jsonString) 
