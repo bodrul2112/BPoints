@@ -54,6 +54,11 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		result.put("folders", folders);
 		result.put("event_type", "list_folders");
 		
+		if(TOP.equals(path))
+		{
+			result.put("is_root", true);
+		}
+		
 		return Response.status(200).entity(result).build();
 	}
 
@@ -90,8 +95,34 @@ public class FileCrawlerWeb extends BaseJsonResource {
 			}
 		}
 		result.put("id", id);
+		result.put("root_folder", new File(rootFile).getAbsoluteFile());
 		return Response.status(200).entity(result).build();
 	}
+	
+	@POST
+	@Path("/save_opened")
+	@Consumes({"application/xml", "application/json"})
+	@Produces({"application/xml", "application/json"})
+	public Response saveOpened(Map<Object,Object> postData) 
+	{
+		File textFile = new File(rootFile +"/opened.json");
+		System.out.println("saving opened :: " + textFile.getAbsolutePath());
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(postData);
+		
+		BufferedWriter writer;
+		try{
+        writer = new BufferedWriter(new FileWriter(textFile));
+        writer.write(json);
+        writer.close();  
+		}
+		catch(Exception e){
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create opened json").build();
+		}
+		
+		return Response.status(200).build();
+    }
 
 	@GET
 	@Path("/text_list")
@@ -164,31 +195,6 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		Map<Object, Object> actualResult = getTextohMessage((String)postData.get("path"), (String)postData.get("id"));
 		actualResult.put("new_texts",postData.get("new_texts"));
 		return Response.status(200).entity(gson.toJson(actualResult)).build();
-    }
-	
-	@POST
-	@Path("/save_opened")
-	@Consumes({"application/xml", "application/json"})
-	@Produces({"application/xml", "application/json"})
-	public Response saveOpened(Map<Object,Object> postData) 
-	{
-		File textFile = new File(rootFile +"/opened.json");
-		System.out.println("saving opened :: " + textFile.getAbsolutePath());
-		
-		Gson gson = new Gson();
-		String json = gson.toJson(postData);
-		
-		BufferedWriter writer;
-		try{
-        writer = new BufferedWriter(new FileWriter(textFile));
-        writer.write(json);
-        writer.close();  
-		}
-		catch(Exception e){
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create opened json").build();
-		}
-		
-		return Response.status(200).build();
     }
 	
 //	public static List<Object> getList(Object jsonString) 

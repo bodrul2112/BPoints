@@ -11,7 +11,7 @@ define(["thirdparty/jquery",'util/Events'], function(jQuery, E) {
     	Events.subscribe(this.id, this._setLoadedFolders.bind(this));
     }
     
-    OpenedStateInternal.prototype._startPiping = function() 
+    OpenedStateInternal.prototype.loadState = function() 
     {
     	var data = {
     		id: this.id
@@ -24,8 +24,9 @@ define(["thirdparty/jquery",'util/Events'], function(jQuery, E) {
     	if(data.opened)
     	{
     		this.loaded_folders = data.opened;
+    		console.log(this.loaded_folders);
+    		Events.publish("pipe_load", data);
     	}
-    	console.log(this.loaded_folders);
     }
     
     OpenedStateInternal.prototype.getOpened = function( eventName, data ) 

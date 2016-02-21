@@ -32,14 +32,16 @@ define([],
         	
         	for(var key in callbacks)
         	{
+        		callbacks[key](eventName, data);
+        		
+        		/*
         		try{
-        			callbacks[key](eventName, data);
         		}
         		catch(err)
         		{
         			console.log(err)
         		}
-        		
+        		*/
         	}
         }
 

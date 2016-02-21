@@ -4,19 +4,48 @@ define(['react'], function(React) {
     getInitialState: function() {
       return {
     	  event_id: Events.getUID(),
+    	  isRoot: this.props.data.is_root,
     	  isListDisplayed:false,
     	  isOpenedOnce:false,
     	  name: this.props.data.name,
+    	  path: this.props.data.path,
     	  bulletTexts: [],
     	  subBulletPoints: []
       };
+    },
+    
+    componentDidMount: function() {
+    	
+    	if(this.state.isRoot)
+    	{
+    		console.log("herp",this.state);
+    		PipeLoader.setRoot(this);
+    		OpenedState.loadState();
+    	}
+    	
+    	Events.subscribe(this.state.path, this.autoExpand.bind(this));
+    	Events.subscribe(this.state.event_id, this.onClick_get_text_callback.bind(this));
+    },
+    
+    autoExpand: function(sEventName, data)
+    {
+    	if(data.autoexpand)
+    	{
+        	if(!this.state.isOpenedOnce){
+        		this.onClick_expand();
+        	}
+        	else
+        	{
+        		PipeLoader.setCurrent(this);
+        	}
+    	}
     },
     
     onClick_expand: function()
     {
     	
     	this.state.isListDisplayed = !this.state.isListDisplayed;
-    	Events.subscribe(this.state.event_id, this.onClick_get_text_callback.bind(this));
+    	
     	var data = {
     		id: this.state.event_id,
     		path: this.props.data.path,
@@ -27,6 +56,9 @@ define(['react'], function(React) {
     
     onClick_get_text_callback: function( eventName, data)
     {
+    	// this entire method is a giant hack
+    	// dont judge me...
+    	
     	if(data.new_path)
     	{
     		/*
@@ -65,13 +97,16 @@ define(['react'], function(React) {
 			   bulletTexts: data.text_list || [],
 			   subBulletPoints: this.state.subBulletPoints,
 			   isOpenedOnce: true});
+    	
+    	if(PipeLoader.isPiping())
+    	{
+        	PipeLoader.setCurrent(this);
+    	}
     },
     
     onClick_addText: function()
     {
     	console.log("adding a new text point")
-    	Events.subscribe(this.state.event_id, this.onClick_get_text_callback.bind(this));
-    	
     	
     	var new_text_input_val = this.refs.new_text_input.value || "";
     	if(new_text_input_val != "")
@@ -90,7 +125,6 @@ define(['react'], function(React) {
     onClick_addFolder: function()
     {
     	console.log("adding a new expandable bullet point")
-    	Events.subscribe(this.state.event_id, this.onClick_get_text_callback.bind(this));
 
     	var input_val = this.refs.name_input.value || "";
     	if(input_val != "")
@@ -104,10 +138,7 @@ define(['react'], function(React) {
     	
     	Events.publish("save_folder", data);
     },
-
-    componentDidMount: function() {
-    },
-
+    
     render: function() {
       	
       var list_items = [];
