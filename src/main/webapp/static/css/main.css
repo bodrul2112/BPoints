@@ -13,8 +13,17 @@
 }
 
 .input_wrapper {
-	
 	display: inline-block;
+	opacity: 0;
+	width: 100%;
+}
+
+.input_wrapper:hover {
+	opacity:1;
+}
+
+.input_wrapper.add_text_clicked, .input_wrapper.add_point_clicked {
+	opacity:1;
 }
 
 .expand_point {

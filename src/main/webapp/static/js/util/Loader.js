@@ -6,9 +6,9 @@ define(["thirdparty/jquery"], function(jQuery) {
     	Events.subscribe("load_text", this._load_text.bind(this));
     	Events.subscribe("load_opened", this._load_opened.bind(this));
     	
-    	this.path_prefix = "http://localhost:6677/bpoints/folder/?path=";
-    	this.text_path_prefix = "http://localhost:6677/bpoints/text_list/?path=";
-    	this.load_opened_path = "http://localhost:6677/bpoints/load_opened/";
+    	this.path_prefix = "http://localhost:6678/bpoints/folder/?path=";
+    	this.text_path_prefix = "http://localhost:6678/bpoints/text_list/?path=";
+    	this.load_opened_path = "http://localhost:6678/bpoints/load_opened/";
     }
     
     LoaderInternal.prototype._load_folder = function( eventName, data ) 

@@ -10,7 +10,9 @@ define(['react'], function(React) {
     	  name: this.props.data.name,
     	  path: this.props.data.path,
     	  bulletTexts: [],
-    	  subBulletPoints: []
+    	  subBulletPoints: [],
+    	  addTextClickedInto: false,
+    	  addPointClickedInto: false
       };
     },
     
@@ -96,7 +98,9 @@ define(['react'], function(React) {
     	this.setState({isListDisplayed: this.state.isListDisplayed,
 			   bulletTexts: data.text_list || [],
 			   subBulletPoints: this.state.subBulletPoints,
-			   isOpenedOnce: true});
+			   isOpenedOnce: true,
+			   addTextClickedInto: this.state.addTextClickedInto,
+			   addPointClickedInto: this.state.addPointClickedInto});
     	
     	if(PipeLoader.isPiping())
     	{
@@ -106,6 +110,7 @@ define(['react'], function(React) {
     
     onClick_addText: function()
     {
+  	  	this.state.addTextClickedInto=false;
     	console.log("adding a new text point")
     	
     	var new_text_input_val = this.refs.new_text_input.value || "";
@@ -124,6 +129,7 @@ define(['react'], function(React) {
     
     onClick_addFolder: function()
     {
+  	  	this.state.addPointClickedInto=false;
     	console.log("adding a new expandable bullet point")
 
     	var input_val = this.refs.name_input.value || "";
@@ -135,9 +141,21 @@ define(['react'], function(React) {
     				new_folder: input_val
     		}
     	}
-    	
+    	this.refs.name_input.value = "";
     	Events.publish("save_folder", data);
     },
+    
+    // START: sad...sad code
+    onClick_intoAddPoint: function()
+    {
+    	this.setState({addPointClickedInto: !this.state.addPointClickedInto});
+    },
+    
+    onClick_intoAddText: function()
+    {
+    	this.setState({addTextClickedInto: !this.state.addTextClickedInto});
+    },
+    // END: sad...sad code
     
     render: function() {
       	
@@ -152,16 +170,18 @@ define(['react'], function(React) {
           this.state.bulletTexts.forEach(function(item){
         	  list_items.push(<li className={['list_item list_text']}><div>{item}</div></li>)
           }.bind(this));
-          
-          var new_text_input = <li><div className={['input_wrapper']}>
-          		<input className={['add_text add_text_input_box']} ref='new_text_input' />
+          var additionalTextClassName = this.state.addTextClickedInto ? 'add_text_clicked' :  'derp';
+          var new_text_input = <li><div className={['input_wrapper ' + additionalTextClassName]}>
+          		<input className={['add_text add_text_input_box']} ref='new_text_input' onClick={this.onClick_intoAddText}/>
           		<div className={['add_text add_text_btn']} onClick={this.onClick_addText}>{' ++ '}</div>
           </div></li>;
           
           list_items.push(new_text_input);
           
-          new_folder_input = <li><div className={['input_wrapper']}>
-        	  	<input className={['expand_point expand_input_box']} ref='name_input' />
+          
+          var additionalPointClassName = this.state.addPointClickedInto ? 'add_point_clicked' :  'derp';
+          new_folder_input = <li><div className={['input_wrapper '+ additionalPointClassName]}>
+        	  	<input className={['expand_point expand_input_box']} ref='name_input' onClick={this.onClick_intoAddPoint}/>
 				<div className={['expand_point expand_point_btn']} onClick={this.onClick_addFolder}>{' ++ '}</div>
 			</div></li>;
       }	

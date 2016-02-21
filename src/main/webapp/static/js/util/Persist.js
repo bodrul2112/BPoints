@@ -6,9 +6,9 @@ define(["thirdparty/jquery"], function(jQuery) {
     	Events.subscribe("save_text", this._save_text.bind(this));
     	Events.subscribe("save_opened", this._save_opened.bind(this));
     	
-    	this.save_path_prefix = "http://localhost:6677/bpoints/save_folder";
-    	this.save_text_prefix = "http://localhost:6677/bpoints/save_text";
-    	this.save_opened_prefix = "http://localhost:6677/bpoints/save_opened";
+    	this.save_path_prefix = "http://localhost:6678/bpoints/save_folder";
+    	this.save_text_prefix = "http://localhost:6678/bpoints/save_text";
+    	this.save_opened_prefix = "http://localhost:6678/bpoints/save_opened";
     }
     
     PersistInternal.prototype._save_folder = function( eventName, postData ) 

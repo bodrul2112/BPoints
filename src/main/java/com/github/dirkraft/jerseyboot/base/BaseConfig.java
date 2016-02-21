@@ -3,11 +3,9 @@ package com.github.dirkraft.jerseyboot.base;
 import com.github.dirkraft.propslive.Props;
 import com.github.dirkraft.propslive.PropsImpl;
 import com.github.dirkraft.propslive.dynamic.DynamicPropsSets;
-import com.github.dirkraft.propslive.propsrc.PropSource;
 import com.github.dirkraft.propslive.propsrc.PropSourceMap;
 import com.github.dirkraft.propslive.propsrc.PropSourceSysProps;
 import com.github.dirkraft.propslive.propsrc.view.LayeredPropSource;
-import org.eclipse.jetty.util.resource.ResourceCollection;
 
 /**
  * @author jason
@@ -30,7 +28,7 @@ public class BaseConfig {
      * Defaults to {@value #DEF_JETTY_PORT}.
      */
     public static final String PROP_JETTY_PORT = "jetty.port";
-    public static final int DEF_JETTY_PORT = 6677;
+    public static final int DEF_JETTY_PORT = 6678;
     static {
         DEFAULTS.setInt(PROP_JETTY_PORT, DEF_JETTY_PORT);
     }
