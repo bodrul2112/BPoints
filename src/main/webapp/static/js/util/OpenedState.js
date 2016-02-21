@@ -5,7 +5,6 @@ define(["thirdparty/jquery",'util/Events'], function(jQuery, E) {
     	this.id = "OpenedStateInternal";
     	
     	this.loaded_folders = {};
-    	this.isPiping = true;
     	
     	Events.subscribe("load_text", this._recordOpen.bind(this));
     	Events.subscribe(this.id, this._setLoadedFolders.bind(this));
@@ -36,7 +35,7 @@ define(["thirdparty/jquery",'util/Events'], function(jQuery, E) {
     
     OpenedStateInternal.prototype._recordOpen = function( eventName, data ) 
     {
-    	if(!this.isPiping)
+    	if(!PipeLoader.isPiping())
     	{
         	if(data.opened_state)
         	{

@@ -34,7 +34,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	
 	public FileCrawlerWeb()
 	{
-		//rootFile = new File("").getAbsolutePath();
+		rootFile = new File("").getAbsolutePath();
 	}
 	
 	//http://localhost:6677/bpoints/folder/?path=___the_top_folder_please_dont_use_this_id&id=my_id
